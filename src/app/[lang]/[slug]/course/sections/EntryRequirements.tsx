@@ -43,12 +43,15 @@ export default function EntryRequirements({ section, anchorId }: Props) {
 
         {block.c_4 && (
           <div className="border-l-brand-300 mb-4 border-l-2 pl-4 text-xl font-medium text-gray-800">
-            {block.c_4.split('|').map((part, idx) => (
-              <span key={idx}>
-                {part.trim()}
-                {idx < block.c_4.split('|').length - 1 && <br />}
-              </span>
-            ))}
+            {(() => {
+              const parts = block.c_4.split('|')
+              return parts.map((part, idx) => (
+                <span key={idx}>
+                  {part.trim()}
+                  {idx < parts.length - 1 && <br />}
+                </span>
+              ))
+            })()}
           </div>
         )}
 
