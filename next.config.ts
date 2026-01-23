@@ -1,7 +1,12 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  productionBrowserSourceMaps: false,
+  turbopack: {
+    resolveAlias: {
+      '@': './src',
+    },
+  },
 }
 
 export default nextConfig
