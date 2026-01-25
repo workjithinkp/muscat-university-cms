@@ -48,7 +48,7 @@ export default function ProgramsBanner({ section, page }: Props) {
               ...(page.category
                 ? [{ label: page.category, href: null }]
                 : []),
-              { label: page.name || page.title || 'Programme', href: null },
+              { label: block.c_7 || page.name || page.title || 'Programme', href: null },
             ]}
           />
         </div>
@@ -60,7 +60,7 @@ export default function ProgramsBanner({ section, page }: Props) {
             <div className="px-4 py-4 lg:px-8 lg:py-8">
               <div className="mb-[18px] border-b border-b-gray-300 pb-[18px]">
                 <h3 className="text-brand-100 text-3xl font-medium">
-                  {page.name || page.title || 'Programme'}
+                  {block.c_7 || page.name || page.title || 'Programme'}
                 </h3>
               </div>
 
