@@ -1,15 +1,17 @@
-import { fetchPageBySlug, ensureCourseTemplate } from '@/lib/api'
+import { fetchPageBySlug, ensureCourseTemplate, ensureFacultyTemplate } from '@/lib/api'
 import { notFound } from 'next/navigation'
 import CourseLayout from './course/CourseLayout'
+import FacultyLayout from './faculty/FacultyLayout'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Page({
   params,
 }: {
-  params: { lang: string; slug: string }
+  params: Promise<{ lang: string; slug: string }>
 }) {
-  const page = await fetchPageBySlug(params.lang, params.slug)
+  const { lang, slug } = await params
+  const page = await fetchPageBySlug(lang, slug)
 
   if (!page) {
     notFound()
@@ -18,10 +20,14 @@ export default async function Page({
   // Route based on template
   if (page.template === 'course') {
     ensureCourseTemplate(page)
-    return <CourseLayout page={page} lang={params.lang} />
+    return <CourseLayout page={page} lang={lang} />
+  }
+
+  if (page.template === 'Faculty') {
+    ensureFacultyTemplate(page)
+    return <FacultyLayout page={page} lang={lang} />
   }
 
   // Add more template routing here as needed
-  
   notFound()
 }

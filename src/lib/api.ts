@@ -148,6 +148,12 @@ export function ensureCourseTemplate(page?: PageData | null) {
   }
 }
 
+export function ensureFacultyTemplate(page?: PageData | null) {
+  if (!page || page.template !== 'Faculty') {
+    notFound()
+  }
+}
+
 export interface CourseListItem {
   id: number
   name: string

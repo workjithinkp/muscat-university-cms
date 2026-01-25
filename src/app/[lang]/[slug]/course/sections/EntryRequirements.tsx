@@ -35,7 +35,7 @@ export default function EntryRequirements({ section, anchorId }: Props) {
       </div>
 
       <div className="px-4 py-4">
-        <p className="mb-4 text-gray-800">{html(block.c_2)}</p>
+        <div className="mb-4 text-gray-800">{html(block.c_2)}</div>
 
         {block.c_3 && (
           <p className="mb-4 text-lg font-medium text-gray-800">{block.c_3}</p>
