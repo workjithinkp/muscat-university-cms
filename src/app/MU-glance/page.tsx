@@ -1,5 +1,5 @@
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
-import GlanceSubmenu from '@/components/mu-glance/sub-menu'
+import GlanceSubmenu from '@/app/MU-glance/components/sub-menu'
 
 import Link from 'next/link'
 import Image from 'next/image'

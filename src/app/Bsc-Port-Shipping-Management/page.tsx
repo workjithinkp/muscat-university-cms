@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 import ProgrammeNav from '@/components/common/programme-side-menu'
-import SubmenuBsc from '@/components/programme-bsc/bsc-submenu'
+import SubmenuBsc from '@/app/Bsc-Port-Shipping-Management/components/bsc-submenu'
 
 import { GiGraduateCap } from 'react-icons/gi'
 import { FaBook } from 'react-icons/fa6'

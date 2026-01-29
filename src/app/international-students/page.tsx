@@ -1,8 +1,8 @@
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 
-import InternationalSubmenu from '@/components/international-student/international-submenu'
-import OfferSwiper from '@/components/international-student/offer-swiper'
-import TestimonialSwiper from '@/components/international-student/tesimonial-swiper'
+import InternationalSubmenu from '@/app/international-students/components/international-submenu'
+import OfferSwiper from '@/app/international-students/components/offer-swiper'
+import TestimonialSwiper from '@/app/international-students/components/testimonial-swiper'
 
 import Link from 'next/link'
 import Image from 'next/image'

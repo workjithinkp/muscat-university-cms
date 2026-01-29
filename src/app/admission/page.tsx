@@ -1,5 +1,5 @@
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
-import SubmenuAdmission from '@/components/admission/admission-subment'
+import SubmenuAdmission from '@/app/admission/components/admission-subment'
 
 import Link from 'next/link'
 import Image from 'next/image'

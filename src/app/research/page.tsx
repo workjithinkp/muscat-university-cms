@@ -4,9 +4,9 @@ import Image from 'next/image'
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 
 import ResearchSection from '@/components/home/ResearchSection'
-import ResearchStructure from '@/components/research/research-structure'
-import ResearchInnovation from '@/components/research/research-innovation'
-import ResearchPartner from '@/components/research/research-partner'
+import ResearchStructure from '@/app/research/components/research-structure'
+import ResearchInnovation from '@/app/research/components/research-innovation'
+import ResearchPartner from '@/app/research/components/research-partner'
 
 const researchCards = [
   {

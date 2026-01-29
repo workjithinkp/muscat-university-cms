@@ -1,6 +1,6 @@
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 import ProgrammeNav from '@/components/common/programme-side-menu'
-import SubmenuBeng from '@/components/programme-beng/bsc-submenu'
+import SubmenuBeng from '@/app/BEng-Chemical-Engineering/components/bsc-submenu'
 
 import Link from 'next/link'
 import Image from 'next/image'

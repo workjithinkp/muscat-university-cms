@@ -2,8 +2,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
-import FacultyAccordion from '@/components/faculty-engineering/faculty-accordion'
-import FacultyForm from '@/components/faculty-engineering/faculty-form'
+import FacultyAccordion from '@/app/faculty-engineering/components/faculty-accordion'
+import FacultyForm from '@/app/faculty-engineering/components/faculty-form'
 
 import { LuArrowUpRight } from 'react-icons/lu'
 

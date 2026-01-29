@@ -1,6 +1,6 @@
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 
-import ImpactAccordion from '@/components/our-impact/impact-accordion'
+import ImpactAccordion from '@/app/our-impact/components/impact-accordion'
 
 import Link from 'next/link'
 import Image from 'next/image'

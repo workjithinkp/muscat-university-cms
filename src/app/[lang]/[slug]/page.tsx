@@ -2,6 +2,7 @@ import { fetchPageBySlug, ensureCourseTemplate, ensureFacultyTemplate } from '@/
 import { notFound } from 'next/navigation'
 import CourseLayout from './course/CourseLayout'
 import FacultyLayout from './faculty/FacultyLayout'
+import DefaultLayout from './default/DefaultLayout'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,6 +27,11 @@ export default async function Page({
   if (page.template === 'Faculty') {
     ensureFacultyTemplate(page)
     return <FacultyLayout page={page} lang={lang} />
+  }
+
+  // Default page template
+  if (page.template === 'pages' || !page.template) {
+    return <DefaultLayout page={page} lang={lang} />
   }
 
   // Add more template routing here as needed

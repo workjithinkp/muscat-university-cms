@@ -1,6 +1,6 @@
 'use client'
 
-import LeadershipSubmenu from '@/components/leadership/leadership-submenu'
+import LeadershipSubmenu from '@/app/leadership/components/leadership-submenu'
 
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
 

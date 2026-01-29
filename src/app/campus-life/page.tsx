@@ -2,9 +2,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import DynamicBreadcrumb from '@/components/common/breadcrumb'
-import CampusFacilities from '@/components/campus-life/campus-facilities'
-import CampusBeyond from '@/components/campus-life/campus-beyond'
-import CampusTestimonials from '@/components/campus-life/campus-testimonials'
+import CampusFacilities from '@/app/campus-life/components/campus-facilities'
+import CampusBeyond from '@/app/campus-life/components/campus-beyond'
+import CampusTestimonials from '@/app/campus-life/components/campus-testimonials'
 
 import { LuArrowUpRight } from 'react-icons/lu'
 

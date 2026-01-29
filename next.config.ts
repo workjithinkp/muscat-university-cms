@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
       '@': './src',
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'muc.adventzeventz.com',
+      },
+    ],
+  },
 }
 
 export default nextConfig
