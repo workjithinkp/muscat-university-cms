@@ -1,8 +1,14 @@
-import { fetchPageBySlug, ensureCourseTemplate, ensureFacultyTemplate } from '@/lib/api'
+import {
+  fetchPageBySlug,
+  ensureCourseTemplate,
+  ensureFacultyTemplate,
+  ensureProgrammesTemplate,
+} from '@/lib/api'
 import { notFound } from 'next/navigation'
 import CourseLayout from './course/CourseLayout'
 import FacultyLayout from './faculty/FacultyLayout'
 import DefaultLayout from './default/DefaultLayout'
+import ProgrammesLayout from './programmes/ProgrammesLayout'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,6 +33,11 @@ export default async function Page({
   if (page.template === 'Faculty') {
     ensureFacultyTemplate(page)
     return <FacultyLayout page={page} lang={lang} />
+  }
+
+  if (page.template === 'programmes') {
+    ensureProgrammesTemplate(page)
+    return <ProgrammesLayout page={page} lang={lang} />
   }
 
   // Default page template

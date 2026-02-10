@@ -35,7 +35,7 @@ export default function Fees({ section, anchorId }: Props) {
       </div>
 
       <div className="px-4 py-4">
-        <p className="mb-4 text-gray-800">{html(block.c_2)}</p>
+        <div className="mb-4 text-gray-800">{html(block.c_2)}</div>
 
         {list.length > 0 && (
           <div className="max-w-[100%]">

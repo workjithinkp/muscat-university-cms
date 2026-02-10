@@ -154,20 +154,32 @@ export function ensureFacultyTemplate(page?: PageData | null) {
   }
 }
 
+export function ensureProgrammesTemplate(page?: PageData | null) {
+  if (!page || page.template !== 'programmes') {
+    notFound()
+  }
+}
+
 export interface CourseListItem {
   id: number
   name: string
   slug: string
   category?: string | null
+  image?: string | null
+  title?: string | null
 }
 
 export async function fetchCoursesByTemplate(
   lang: string,
-  template: string = 'course'
+  template: string = 'course',
+  category?: string | null
 ): Promise<CourseListItem[]> {
   const normalizedLang = cleanPath(lang || 'en')
   const baseUrl = 'https://muc.adventzeventz.com/api/v1/pages-by-template'
-  const url = `${baseUrl}/${normalizedLang}/${template}`
+  const normalizedCategory = cleanPath(category || '')
+  const url = normalizedCategory
+    ? `${baseUrl}/${normalizedLang}/${template}/${encodeURIComponent(normalizedCategory)}`
+    : `${baseUrl}/${normalizedLang}/${template}`
 
   try {
     const response = await fetch(url, {
@@ -185,8 +197,10 @@ export async function fetchCoursesByTemplate(
         id: number
         name?: string | null
         slug: string
+        title?: string | null
         category?: string
         course_title?: string
+        image?: string | null
       }>
     }
 
@@ -198,7 +212,10 @@ export async function fetchCoursesByTemplate(
       id: item.id,
       slug: item.slug,
       category: item.category,
-      name: item.name || item.course_title || item.slug || 'Course',
+      title: item.title,
+      image: item.image,
+      name:
+        item.name || item.course_title || item.title || item.slug || 'Course',
     }))
   } catch (error) {
     console.warn('Error fetching courses:', error)

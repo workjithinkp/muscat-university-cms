@@ -71,7 +71,7 @@ interface CourseLayoutProps {
 }
 
 export default async function CourseLayout({ page, lang }: CourseLayoutProps) {
-  const courses = await fetchCoursesByTemplate(lang, 'course')
+  const courses = await fetchCoursesByTemplate(lang, 'course', page.category)
   const orderedSections = sortSections(page.sections)
   const sectionsWithAnchors = attachAnchors(orderedSections)
   const { banner, rest } = splitBanner(sectionsWithAnchors)
