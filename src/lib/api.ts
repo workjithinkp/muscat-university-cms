@@ -90,6 +90,7 @@ export interface PageData {
   deleted_at?: string | null
   image?: string | null
   category?: string | null
+  under_banner_menu?: number | null
   sections?: PageSection[] | null
 }
 

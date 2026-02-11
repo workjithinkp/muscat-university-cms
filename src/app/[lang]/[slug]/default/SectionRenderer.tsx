@@ -11,13 +11,23 @@ import InternationalAccommodation from './sections/InternationalAccommodation'
 import InternationalCost from './sections/InternationalCost'
 import InternationalStudentLife from './sections/InternationalStudentLife'
 import InternationalTestimonial from './sections/InternationalTestimonial'
+import ResearchBanner from './sections/ResearchBanner'
+import ResearchActivities from './sections/ResearchActivities'
+import ResearchFocusArea from './sections/ResearchFocusArea'
+import ResearchEcoSystem from './sections/ResearchEcoSystem'
+import ResearchHighlights from './sections/ResearchHighlights'
+import ResearchVisionMission from './sections/ResearchVisionMission'
+import ResearchInnovationStrategy from './sections/ResearchInnovationStrategy'
+import ResearchStructure from './sections/ResearchStructure'
+import ResearchPartner from './sections/ResearchPartner'
 
 interface SectionRendererProps {
     section: PageSection
     page?: PageData
+    lang?: string
 }
 
-export default function SectionRenderer({ section, page }: SectionRendererProps) {
+export default function SectionRenderer({ section, page, lang }: SectionRendererProps) {
     const template = section.section?.template
 
     switch (template) {
@@ -39,6 +49,24 @@ export default function SectionRenderer({ section, page }: SectionRendererProps)
             return <InternationalStudentLife section={section} />
         case 'international-testimonial':
             return <InternationalTestimonial section={section} />
+        case 'research-banner':
+            return <ResearchBanner section={section} page={page} lang={lang} />
+        case 'research-activities':
+            return <ResearchActivities section={section} />
+        case 'research-focus-area':
+            return <ResearchFocusArea section={section} />
+        case 'research-eco-system':
+            return <ResearchEcoSystem section={section} />
+        case 'research-highlights':
+            return <ResearchHighlights section={section} page={page} />
+        case 'research-vision-mission':
+            return <ResearchVisionMission section={section} />
+        case 'research-innovation-strategy':
+            return <ResearchInnovationStrategy section={section} />
+        case 'research-structure':
+            return <ResearchStructure section={section} />
+        case 'research-partner':
+            return <ResearchPartner section={section} />
         default:
             console.warn(`Unknown section template: ${template}`)
             return null

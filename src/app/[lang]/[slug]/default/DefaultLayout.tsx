@@ -3,7 +3,6 @@ import { PageData, PageSection } from '@/lib/api'
 import SectionRenderer from './SectionRenderer'
 import InternationalSubmenu, { SubmenuItem } from './sections/InternationalSubmenu'
 import NavbarSection from '@/components/layout/nav'
-import FooterSection from '@/components/layout/footer'
 
 interface DefaultLayoutProps {
     page: PageData
@@ -75,6 +74,7 @@ export default function DefaultLayout({ page, lang }: DefaultLayoutProps) {
     const sectionsWithAnchors = attachAnchors(orderedSections)
     const { banner, rest } = splitBanner(sectionsWithAnchors)
     const submenuItems = buildSubmenuItems(rest)
+    const showSubmenu = page.under_banner_menu === 1
 
     return (
         <main className="min-h-screen">
@@ -82,23 +82,21 @@ export default function DefaultLayout({ page, lang }: DefaultLayoutProps) {
 
             <div className="flex flex-col">
                 {/* Banner Section */}
-                {banner && <SectionRenderer section={banner} page={page} />}
+                {banner && <SectionRenderer section={banner} page={page} lang={lang} />}
 
                 {/* Submenu */}
-                {submenuItems.length > 0 && <InternationalSubmenu items={submenuItems} />}
+                {showSubmenu && submenuItems.length > 0 && (
+                    <InternationalSubmenu items={submenuItems} />
+                )}
 
                 {/* Rest of Sections - Wrapper with IDs for scrolling */}
                 {rest.map((section) => (
                     <div key={section.id || section.section_sort} id={section.anchorId}>
-                        <SectionRenderer
-                            section={section}
-                            page={page}
-                        />
+                        <SectionRenderer section={section} page={page} lang={lang} />
                     </div>
                 ))}
             </div>
 
-            <FooterSection />
         </main>
     )
 }
