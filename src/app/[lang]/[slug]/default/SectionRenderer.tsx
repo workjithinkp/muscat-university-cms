@@ -20,6 +20,11 @@ import ResearchVisionMission from './sections/ResearchVisionMission'
 import ResearchInnovationStrategy from './sections/ResearchInnovationStrategy'
 import ResearchStructure from './sections/ResearchStructure'
 import ResearchPartner from './sections/ResearchPartner'
+import AdmissionBanner from './sections/AdmissionBanner'
+import AdmissionWhyChoose from './sections/AdmissionWhyChoose'
+import AdmissionHowApply from './sections/AdmissionHowApply'
+import AdmissionUg from './sections/AdmissionUg'
+import AdmissionSupportingDoc from './sections/AdmissionSupportingDoc'
 
 interface SectionRendererProps {
     section: PageSection
@@ -67,6 +72,16 @@ export default function SectionRenderer({ section, page, lang }: SectionRenderer
             return <ResearchStructure section={section} />
         case 'research-partner':
             return <ResearchPartner section={section} />
+        case 'admission-banner':
+            return <AdmissionBanner section={section} />
+        case 'admission-why-choose':
+            return <AdmissionWhyChoose section={section} />
+        case 'admission-how-apply':
+            return <AdmissionHowApply section={section} />
+        case 'admission-ug':
+            return <AdmissionUg section={section} />
+        case 'admission-suppporting-doc':
+            return <AdmissionSupportingDoc section={section} />
         default:
             console.warn(`Unknown section template: ${template}`)
             return null
