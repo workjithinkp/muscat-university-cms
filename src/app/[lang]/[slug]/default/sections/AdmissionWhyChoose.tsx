@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { PageSection } from '@/lib/api'
+import { PageSection, resolveImageUrl } from '@/lib/api'
 
 interface AdmissionWhyChooseProps {
   section: PageSection
@@ -9,12 +9,6 @@ export default function AdmissionWhyChoose({ section }: AdmissionWhyChooseProps)
   const items = [...(section.list || [])].sort(
     (a, b) => Number(a.sort || 0) - Number(b.sort || 0)
   )
-  const fallbackImages = [
-    '/images/admission-choose-01.jpg',
-    '/images/admission-choose-02.jpg',
-    '/images/admission-choose-03.jpg',
-    '/images/admission-choose-04.jpg',
-  ]
 
   return (
     <>
@@ -27,7 +21,10 @@ export default function AdmissionWhyChoose({ section }: AdmissionWhyChooseProps)
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
-            {items.map((item, index) => (
+            {items.map((item, index) => {
+              const imageSrc = resolveImageUrl(item.i_1)
+
+              return (
               <div key={item.id || index} className="flex flex-wrap gap-4">
                 <div className="text-brand-300 text-2xl font-medium">
                   {String(index + 1).padStart(2, '0')}
@@ -42,24 +39,26 @@ export default function AdmissionWhyChoose({ section }: AdmissionWhyChooseProps)
                   )}
 
                   {item.c_2 && (
-                    <p
+                    <div
                       dangerouslySetInnerHTML={{
                         __html: item.c_2,
-                      }}></p>
+                      }}></div>
                   )}
                 </div>
 
-                <div className="w-[150px] overflow-hidden rounded-full">
-                  <Image
-                    src={fallbackImages[index] || '/images/admission-choose-01.jpg'}
-                    width={150}
-                    height={150}
-                    className="h-full w-full object-cover"
-                    alt={item.c_1 || 'Admission item'}
-                  />
-                </div>
+                {imageSrc && (
+                  <div className="w-[150px] overflow-hidden rounded-full">
+                    <Image
+                      src={imageSrc}
+                      width={150}
+                      height={150}
+                      className="h-full w-full object-cover"
+                      alt={item.c_1 || 'Admission item'}
+                    />
+                  </div>
+                )}
               </div>
-            ))}
+            )})}
           </div>
         </div>
       </div>
