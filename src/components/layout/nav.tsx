@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -64,145 +65,106 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 import { Separator } from '@/components/ui/separator'
 
-const navData = [
-  {
-    label: 'Study',
-    submenu: [
-      {
-        title: 'Undergraduate',
-        links: [
-          { label: 'Programmes', href: '/programmes' },
-          {
-            label: 'General Foundation Programme',
-            href: '/general-foundation-programme',
-          },
-          { label: 'Placement', href: '/placement' },
-          { label: 'Admissions', href: '/admission' },
-          { label: 'Transfer Student', href: '#' },
-          { label: 'Contact us', href: '/contact-us' },
-        ],
-      },
-      {
-        title: 'Postgraduate',
-        links: [
-          { label: 'Programmes', href: '#' },
-          { label: 'Admissions', href: '/admission' },
-          { label: 'Contact us', href: '/contact-us' },
-        ],
-      },
-      {
-        title: 'International',
-        href: 'international-students',
-        links: [
-          {
-            label: 'Why study at MU?',
-            href: '/international-students#why-choose',
-          },
-          {
-            label: 'Visa Guidance',
-            href: '/international-students#visa-immigration',
-          },
-          {
-            label: 'Accommodation',
-            href: '/international-students#accommodation-arrival',
-          },
-          { label: 'International Office', href: '#' },
-        ],
-      },
-    ],
-  },
+interface ApiMenuItem {
+  id: number
+  title: string
+  url: string
+  target?: string | null
+  sort?: number
+  children?: ApiMenuItem[]
+}
 
-  {
-    label: 'Academics',
-    submenu: [
-      {
-        title: 'Faculty of Engineering and Technology',
-        href: '/faculty-engineering',
-      },
-      { title: 'Faculty of Business and Management', href: '#' },
-      { title: 'Faculty of Transport and Logistics', href: '#' },
-      {
-        title: 'English Language Centre',
-        links: [{ label: 'Academic Support Centre', href: '#' }],
-      },
-      { title: 'Learning resource centre', href: '/learning-resource-center' },
-    ],
-  },
+interface ApiMenusResponse {
+  status: number
+  data?: {
+    menu2?: {
+      items?: ApiMenuItem[]
+    }
+  }
+}
 
-  {
-    label: 'Research',
-    submenu: [
-      {
-        title: 'Overview ',
-        links: [
-          { label: 'About Research & Innovation', href: '/research' },
-          { label: 'Postgraduate Research', href: '#' },
-          { label: 'Contact Us', href: '/contact-us' },
-        ],
-      },
-      {
-        title: 'Research and Innovation Centres',
-        links: [
-          { label: 'Business & Management  Centre', href: '#' },
-          { label: 'Engineering & Technology   Centre', href: '#' },
-          { label: 'Logistics and Supply Chain Centre', href: '#' },
-        ],
-      },
-      {
-        title: 'Resources & Impact',
-        links: [
-          { label: 'Publications & Achievements', href: '#' },
-          { label: 'Research Facilities', href: '#' },
-        ],
-      },
-    ],
-  },
+type NavSubLink = {
+  label: string
+  href: string
+}
 
-  {
-    label: 'MU Life',
-    submenu: [
-      { title: 'Student Advisory Council ', href: 'student-advisory-council' },
-      { title: 'Campus Life', href: '/campus-life' },
-      { title: 'Virtual Tour', href: '#' },
-    ],
-  },
+type NavSubItem = {
+  title: string
+  href?: string
+  links?: NavSubLink[]
+}
 
-  {
-    label: 'About',
-    submenu: [
-      { title: ' MU at a Glance', href: '/MU-glance' },
-      { title: 'Leadership & Governance', href: '/leadership' },
-      {
-        title: 'Quality Assurance & Accreditation',
-        href: '/quality-assurance',
-      },
-      { title: 'Partnerships & Affiliations', href: '#' },
-      { title: 'Our Impact', href: '/our-impact' },
-    ],
-  },
-]
+type NavItem = {
+  label: string
+  submenu: NavSubItem[]
+}
 
-const mobileMenuData = [
-  {
-    label: 'Connect',
-    submenu: [
-      'MU Academy',
-      'Workshops & Conferences',
-      'Alumni',
-      'Jobs & Career at MU',
-      'Social Media (Social Media Feed)',
-    ],
-  },
-  { label: 'Departments' },
-  { label: 'Upcoming Events' },
-  { label: 'Student’s Voices' },
-  { label: 'My MU (student services)' },
-  { label: 'Visual Identity' },
-  { label: 'News and Media' },
-]
+function getLocaleFromPathname(pathname: string) {
+  const firstSegment = pathname.split('/').filter(Boolean)[0]
+  if (!firstSegment) return 'en'
+  if (/^[a-z]{2}$/i.test(firstSegment)) {
+    return firstSegment.toLowerCase()
+  }
+  return 'en'
+}
+
+function normalizeHref(url?: string | null) {
+  if (!url) return '#'
+  const trimmed = url.trim()
+  if (!trimmed) return '#'
+  if (
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('mailto:') ||
+    trimmed.startsWith('tel:') ||
+    trimmed.startsWith('#')
+  ) {
+    return trimmed
+  }
+  if (trimmed.startsWith('/')) return trimmed
+  return `/${trimmed}`
+}
+
+function sortByOrder(items: ApiMenuItem[] = []) {
+  return [...items].sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+}
+
+function mapApiItemsToNav(items: ApiMenuItem[] = []): NavItem[] {
+  return sortByOrder(items).map((topLevel) => {
+    const children = sortByOrder(topLevel.children || [])
+
+    const submenu =
+      children.length > 0
+        ? children.map((child) => {
+            const nestedLinks = sortByOrder(child.children || []).map((nested) => ({
+              label: nested.title,
+              href: normalizeHref(nested.url),
+            }))
+
+            return {
+              title: child.title,
+              href: normalizeHref(child.url),
+              links: nestedLinks.length > 0 ? nestedLinks : undefined,
+            }
+          })
+        : [
+            {
+              title: topLevel.title,
+              href: normalizeHref(topLevel.url),
+            },
+          ]
+
+    return {
+      label: topLevel.title,
+      submenu,
+    }
+  })
+}
 
 export default function NavbarSection() {
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [dynamicNavData, setDynamicNavData] = useState<NavItem[]>([])
 
   useEffect(() => {
     const onScroll = () => {
@@ -215,6 +177,43 @@ export default function NavbarSection() {
   const [open, setOpen] = useState(false)
 
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const locale = getLocaleFromPathname(pathname || '/')
+
+    const fetchMenus = async () => {
+      try {
+        const response = await fetch(`/api/v1/menus/${locale}`, {
+          cache: 'no-store',
+        })
+
+        if (!response.ok) {
+          setDynamicNavData([])
+          return
+        }
+
+        const payload = (await response.json()) as ApiMenusResponse
+        const apiItems = payload?.data?.menu2?.items
+
+        if (payload?.status !== 1 || !Array.isArray(apiItems)) {
+          setDynamicNavData([])
+          return
+        }
+
+        const mappedData = mapApiItemsToNav(apiItems)
+        setDynamicNavData(mappedData)
+      } catch {
+        setDynamicNavData([])
+      }
+    }
+
+    fetchMenus()
+  }, [pathname])
+
+  const dynamicMobileMenuData = dynamicNavData.map((item) => ({
+    label: item.label,
+    submenu: item.submenu.map((sub) => sub.title),
+  }))
 
   return (
     <header
@@ -272,7 +271,7 @@ export default function NavbarSection() {
           <div className="hidden items-center gap-4 pr-4 lg:flex">
             <NavigationMenu>
               <NavigationMenuList className="flex gap-4">
-                {navData.map((item, i) => (
+                {dynamicNavData.map((item, i) => (
                   <NavigationMenuItem key={i} className="relative">
                     {/* TOP LEVEL LABEL */}
                     <NavigationMenuTrigger className="hover:text-brand-200 data-[state=open]:hover:text-brand-200 data-[state=open]:text-brand-200 hover:text-brand-200 focus:text-brand-200 data-[state=open]:text-accent-foreground data-[state=open]:bg-accent/0 focus-visible:ring-ring/0 cursor-pointer rounded-none bg-transparent text-[16px] font-medium text-white uppercase hover:bg-transparent focus:bg-transparent focus-visible:ring-[0] focus-visible:outline-none data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent">
@@ -370,7 +369,7 @@ export default function NavbarSection() {
                 </VisuallyHidden>
 
                 <div className="relative z-10 flex flex-col space-y-4">
-                  {mobileMenuData.map((item, index) => {
+                  {dynamicMobileMenuData.map((item, index) => {
                     const isOpen = openIndex === index
                     const hasChildren = !!item.submenu?.length
 
@@ -442,7 +441,7 @@ export default function NavbarSection() {
               </SheetHeader>
 
               <Accordion type="single" collapsible className="mt-4 space-y-2">
-                {navData.map((item, index) => (
+                {dynamicNavData.map((item, index) => (
                   <AccordionItem key={index} value={`menu-${index}`}>
                     <AccordionTrigger className="text-left text-lg font-medium">
                       {item.label}
