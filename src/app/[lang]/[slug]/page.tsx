@@ -10,8 +10,9 @@ import FacultyLayout from './faculty/FacultyLayout'
 import DefaultLayout from './default/DefaultLayout'
 import ProgrammesLayout from './programmes/ProgrammesLayout'
 import GlanceLayout from './glance/GlanceLayout'
+import OurImpactLayout from './our-impact/OurImpactLayout'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function Page({
   params,
@@ -43,6 +44,12 @@ export default async function Page({
 
   if (page.template === 'glance') {
     return <GlanceLayout page={page} lang={lang} />
+  }
+
+  const normalizedTemplate = (page.template || '').trim().toLowerCase()
+
+  if (normalizedTemplate === 'our impact' || normalizedTemplate === 'what we do') {
+    return <OurImpactLayout page={page} />
   }
 
   // Default page template

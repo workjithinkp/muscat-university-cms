@@ -100,36 +100,13 @@ interface ApiResponse {
   message?: string
 }
 
-type FetchMode = 'revalidate' | 'no-store'
-
-interface FetchOptions {
-  mode?: FetchMode
-  revalidate?: number
-}
-
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ||
   'https://muc.adventzeventz.com/api/v1/page'
 
-const DEFAULT_REVALIDATE_SECONDS = 60
-
 function cleanPath(segment?: string | null) {
   if (!segment) return ''
   return segment.replace(/^\/+|\/+$/g, '')
-}
-
-function buildFetchOptions(options?: FetchOptions): RequestInit {
-  const mode = options?.mode ?? 'revalidate'
-
-  if (mode === 'no-store') {
-    return { cache: 'no-store' }
-  }
-
-  return {
-    next: {
-      revalidate: options?.revalidate ?? DEFAULT_REVALIDATE_SECONDS,
-    },
-  }
 }
 
 export function resolveImageUrl(src?: string | null) {
@@ -142,14 +119,15 @@ export function resolveImageUrl(src?: string | null) {
 
 export async function fetchPageBySlug(
   lang: string,
-  slug: string,
-  options?: FetchOptions
+  slug: string
 ): Promise<PageData | null> {
   const normalizedLang = cleanPath(lang || 'en')
   const normalizedSlug = cleanPath(slug)
   const url = `${API_BASE_URL}/${normalizedLang}/${normalizedSlug}`
 
-  const response = await fetch(url, buildFetchOptions(options))
+  const response = await fetch(url, {
+    cache: 'no-store',
+  })
 
   if (!response.ok) {
     if (response.status === 404) return null
@@ -195,8 +173,7 @@ export interface CourseListItem {
 export async function fetchCoursesByTemplate(
   lang: string,
   template: string = 'course',
-  category?: string | null,
-  options?: FetchOptions
+  category?: string | null
 ): Promise<CourseListItem[]> {
   const normalizedLang = cleanPath(lang || 'en')
   const baseUrl = 'https://muc.adventzeventz.com/api/v1/pages-by-template'
@@ -206,7 +183,9 @@ export async function fetchCoursesByTemplate(
     : `${baseUrl}/${normalizedLang}/${template}`
 
   try {
-    const response = await fetch(url, buildFetchOptions(options))
+    const response = await fetch(url, {
+      cache: 'no-store',
+    })
 
     if (!response.ok) {
       console.warn(`Failed to fetch courses (${response.status})`)
