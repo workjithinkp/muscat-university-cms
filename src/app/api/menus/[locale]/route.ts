@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const revalidate = 60
+
 function getMenusApiBaseUrl() {
   const fromPublic = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, '')
 
@@ -26,7 +28,7 @@ export async function GET(
 
   try {
     const upstream = await fetch(endpoint, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     })
 
     if (!upstream.ok) {

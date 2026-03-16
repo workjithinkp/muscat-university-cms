@@ -11,7 +11,7 @@ import DefaultLayout from './default/DefaultLayout'
 import ProgrammesLayout from './programmes/ProgrammesLayout'
 import GlanceLayout from './glance/GlanceLayout'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function Page({
   params,
